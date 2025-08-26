@@ -18,6 +18,22 @@ WORKDIR /root/ComfyUI
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
+# Extra deps for popular custom nodes (KJNodes, AnimateDiff, IPAdapter, InstantID, InsightFace, etc.)
+RUN pip install \
+    opencv-python-headless \
+    imageio \
+    imageio-ffmpeg \
+    ffmpeg-python \
+    timm \
+    einops \
+    transformers \
+    accelerate \
+    safetensors \
+    onnxruntime \
+    onnxruntime-gpu \
+    insightface \
+    mediapipe
+
 # Remove default models folder
 RUN rm -rf /root/ComfyUI/models
 
