@@ -3,8 +3,11 @@ FROM --platform=linux/amd64 python:3.10-slim
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git wget curl build-essential \
+    git wget curl build-essential ffmpeg libgl1 \
     && rm -rf /var/lib/apt/lists/*
+
+# Install runpodctl (for 8888 workspace sidecar)
+RUN curl -fsSL https://raw.githubusercontent.com/runpod/runpodctl/main/install.sh | bash
 
 # Set working directory
 WORKDIR /root
@@ -44,8 +47,11 @@ RUN ln -s /workspace/comfyui/models /root/ComfyUI/models
 RUN rm -rf /root/ComfyUI/custom_nodes && \
     ln -s /workspace/comfyui/custom_nodes /root/ComfyUI/custom_nodes
 
+# Ensure target dirs exist
+RUN mkdir -p /workspace/comfyui/models /workspace/comfyui/custom_nodes
+
 # Expose ComfyUI port
 EXPOSE 8188
 
-# Start ComfyUI (use python3 explicitly)
-CMD ["python3", "main.py", "--listen", "0.0.0.0", "--port", "8188"]
+# Start both RunPod sidecar (8888) and ComfyUI (8188)
+CMD ["bash", "-lc", "runpodctl start & python3 main.py --listen 0.0.0.0 --port 8188"]
