@@ -1,3 +1,4 @@
+# Rebuild trigger
 # Force build for amd64 (RunPod GPUs are amd64)
 FROM --platform=linux/amd64 python:3.10-slim
 
