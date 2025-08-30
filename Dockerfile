@@ -39,16 +39,14 @@ RUN pip install \
 
 # Remove default models folder
 RUN rm -rf /root/ComfyUI/models
-
-# Link models to RunPod volume
-RUN ln -s /workspace/comfyui/models /root/ComfyUI/models
+RUN ln -s /workspace/ComfyUI/models /root/ComfyUI/models
 
 # Link custom_nodes to RunPod volume
 RUN rm -rf /root/ComfyUI/custom_nodes && \
-    ln -s /workspace/comfyui/custom_nodes /root/ComfyUI/custom_nodes
+    ln -s /workspace/ComfyUI/custom_nodes /root/ComfyUI/custom_nodes
 
 # Ensure target dirs exist
-RUN mkdir -p /workspace/comfyui/models /workspace/comfyui/custom_nodes
+RUN mkdir -p /workspace/ComfyUI/models /workspace/ComfyUI/custom_nodes
 
 # Expose ComfyUI port
 EXPOSE 8188
